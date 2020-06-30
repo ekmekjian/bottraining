@@ -72,7 +72,7 @@ public class RedditEvent extends ListenerAdapter {
         RestClient restClient = new HttpRestClient();
         restClient.setUserAgent("bot/1.0 by name");
         // Connect the user
-        com.github.jreddit.entity.User user = new User(restClient, "jokesterae", "Z@QR3Bhscp!jo5");
+        com.github.jreddit.entity.User user = new User(restClient, "", "");
         try {
             user.connect();
         } catch (Exception e) {
