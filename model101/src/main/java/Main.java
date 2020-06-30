@@ -1,4 +1,5 @@
 import events.SocialEvent;
+import events.RedditEvent;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 
@@ -9,7 +10,7 @@ public class Main {
     {
         final String token = "";
         new JDABuilder(token)
-                .addEventListeners(new SocialEvent())
+                .addEventListeners(new RedditEvent())
                 .setActivity(Activity.playing("Searching for John Conner"))
                 .build();
     }

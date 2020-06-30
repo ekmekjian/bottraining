@@ -17,6 +17,7 @@
         <groupId>net.dv8tion</groupId>
         <artifactId>JDA</artifactId>
         <version>4.1.1_101</version>
+
     </dependency>
     <dependency>
         <groupId>org.apache.maven.plugins</groupId>
@@ -33,6 +34,12 @@
         <artifactId>slf4j-log4j12</artifactId>
         <version>1.7.5</version>
     </dependency>
+    <dependency>
+        <groupId>com.github.jreddit</groupId>
+        <artifactId>jreddit</artifactId>
+        <version>1.0.3</version>
+    </dependency>
+
 </dependencies>
 
     <repositories>
