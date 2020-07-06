@@ -1,3 +1,10 @@
+/**
+ * sample for posting into a specific channel in discord
+ * TextChannel textChannel = event.getGuild().getTextChannelsByName("CHANNEL_NAME",true).get(0);
+textChannel.sendMessage("MESSAGE").queue();
+*/
+
+
 package events;
 import com.github.jreddit.entity.Submission;
 import com.github.jreddit.entity.User;
@@ -17,16 +24,20 @@ public class RedditEvent extends ListenerAdapter {
     {
 
         Message msg = event.getMessage();
-        if (msg.getContentRaw().equals("!rtop"))
+        // Initialize REST Client
+        RestClient restClient = new HttpRestClient();
+        restClient.setUserAgent("news bot");
+        // Connect the user
+        com.github.jreddit.entity.User user = new User(restClient, "", "");
+
+
+        if (msg.getContentRaw().equals("!rmeme"))
         {
             MessageChannel channel = event.getChannel();
-            List<Submission> topfeed = pullTopFeed();
-            List<Submission> newsfeed = pullTopFeed();
+            List<Submission> topfeed = pullMemeFeed(user,restClient);
             for(Submission sub : topfeed)
             {
-                channel.sendMessage((String)sub.getTitle()+"\n").queue();
-                channel.sendMessage("r/"+(String)sub.getSubreddit()+"\n").queue();
-                channel.sendMessage((String)sub.getUrl()).queue();
+                channel.sendMessage((String)sub.getUrl()+"\n").queue();
                 channel.sendMessage("--------------------------------------------------" +
                         "-------------------------------------------------").queue();
 
@@ -35,7 +46,7 @@ public class RedditEvent extends ListenerAdapter {
         if (msg.getContentRaw().equals("!rnews"))
         {
             MessageChannel channel = event.getChannel();
-            List<Submission> newsfeed = pullNewsFeed();
+            List<Submission> newsfeed = pullNewsFeed(user,restClient);
             for(Submission sub : newsfeed)
             {
                 channel.sendMessage((String)sub.getTitle()+"\n").queue();
@@ -47,12 +58,8 @@ public class RedditEvent extends ListenerAdapter {
             }
         }
     }
-    List<Submission> pullTopFeed(){
-        // Initialize REST Client
-        RestClient restClient = new HttpRestClient();
-        restClient.setUserAgent("news bot");
-        // Connect the user
-        com.github.jreddit.entity.User user = new User(restClient, "jokesterae", "");
+    List<Submission> pullMemeFeed(com.github.jreddit.entity.User user, RestClient restClient){
+        
         try {
             user.connect();
         } catch (Exception e) {
@@ -67,12 +74,8 @@ public class RedditEvent extends ListenerAdapter {
 
         return submissionsSubreddit;
     }
-    List<Submission> pullNewsFeed(){
-        // Initialize REST Client
-        RestClient restClient = new HttpRestClient();
-        restClient.setUserAgent("bot/1.0 by name");
-        // Connect the user
-        com.github.jreddit.entity.User user = new User(restClient, "", "");
+    List<Submission> pullNewsFeed(com.github.jreddit.entity.User user, RestClient restClient){
+        
         try {
             user.connect();
         } catch (Exception e) {
