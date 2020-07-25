@@ -57,6 +57,20 @@ public class RedditEvent extends ListenerAdapter {
 
             }
         }
+        if(msg.getContentRaw().equals("!help"))
+        {
+            MessageChannel channel = event.getChannel();
+            channel.sendMessage("Use:\n!rnews - to pull articles from r/news\n!rmemes - "+
+            "to pull memes from r/comedyhomicide").queue();
+        }
+        if(msg.getContentRaw().equals("!search"))
+        {
+
+        }
+        if(msg.getContentRaw().equals("!8ball")){
+            MessageChannel channel = event.getChannel();
+            channel.sendMessage("Asking the 🎱 your question..");
+        }
     }
     List<Submission> pullMemeFeed(com.github.jreddit.entity.User user, RestClient restClient){
         
