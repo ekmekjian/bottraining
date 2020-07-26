@@ -30,7 +30,8 @@ public class RedditEvent extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event)
     {
 
-        Message msg = event.getMessage();
+        Message input = event.getMessage();
+        String msg [] = input.getContentRaw().split(" ");
         // Initialize REST Client
         RestClient restClient = new HttpRestClient();
         restClient.setUserAgent("news bot");
@@ -38,7 +39,7 @@ public class RedditEvent extends ListenerAdapter {
         com.github.jreddit.entity.User user = new User(restClient, "", "");
 
 
-        if (msg.getContentRaw().equals("!rmeme"))
+        if (msg[0].equals("!rmeme"))
         {
             MessageChannel channel = event.getChannel();
             List<Submission> topfeed = pullMemeFeed(user,restClient);
@@ -50,7 +51,7 @@ public class RedditEvent extends ListenerAdapter {
 
             }
         }
-        if (msg.getContentRaw().equals("!rnews"))
+        if (msg[0].equals("!rnews"))
         {
             MessageChannel channel = event.getChannel();
             List<Submission> newsfeed = pullNewsFeed(user,restClient);
@@ -65,24 +66,24 @@ public class RedditEvent extends ListenerAdapter {
 
             }
         }
-        if(msg.getContentRaw().equals("!help"))
+        if(msg[0].equals("!help"))
         {
             MessageChannel channel = event.getChannel();
             channel.sendMessage("Use:\n!rnews - to pull articles from r/news\n!rmemes - "+
             "to pull memes from r/comedyhomicide").queue();
         }
-        if(msg.getContentRaw().equals("!search"))
+        if(msg[0].equals("!search"))
         {
             MessageChannel channel = event.getChannel();
-            try {botSearch(channel);} catch (IOException e) { e.printStackTrace();}
+            try {botSearch(channel,msg);} catch (IOException e) { e.printStackTrace();}
 
         }
-        if(msg.getContentRaw().equals("!8ball")){
+        if(msg[0].equals("!8ball")){
             MessageChannel channel = event.getChannel();
             channel.sendMessage("Asking the 🎱 your question..");
         }
     }
-    void botSearch(MessageChannel ch) throws IOException
+    void botSearch(MessageChannel ch,String[]msg) throws IOException
     {
         Document doc;
         String title,desc,url;
