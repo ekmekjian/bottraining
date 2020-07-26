@@ -61,6 +61,7 @@ public class RedditEvent extends ListenerAdapter {
                 channel.sendMessage((String)sub.getUrl()).queue();
                 channel.sendMessage("--------------------------------------------------" +
                         "-------------------------------------------------").queue();
+                ;
 
             }
         }
@@ -83,19 +84,15 @@ public class RedditEvent extends ListenerAdapter {
     }
     void botSearch(MessageChannel ch) throws IOException
     {
-         /**
-             * Documents d = Jsoup.connect("url").get();
-             * v this is loading the container element that holds the acutal data you're looking for
-             * Elements ele =d.select("thetag#id")
-             * for(Element element : ele.select("thetag.class"))
-             */
-            Document d = Jsoup.connect("https://duckduckgo.com/?t=ffab&q=witchcraft&atb=v229-5rk&ia=web").get();
-            Elements ele = d.select("div#links");
-            for(Element element : ele.select("div.result"))
-            {
-                String title= element.select("dev.result__title a").text();
-                System.out.println(title);
-            }
+        Document doc;
+        String title,desc,url;
+        doc =  Jsoup.connect("https://duckduckgo.com/html/?q=witchcraft+game").get();
+        Elements links = doc.select("div.result");
+        for (Element link : links) {
+           title = link.select("h2.result__title>a").first().text();
+           ch.sendMessage(title).queue();
+        }
+        
     }
     List<Submission> pullMemeFeed(com.github.jreddit.entity.User user, RestClient restClient){
         
