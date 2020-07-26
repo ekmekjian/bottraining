@@ -7,7 +7,7 @@ import javax.security.auth.login.LoginException;
 public class Main {
     public static void main(String[] args) throws LoginException
     {
-        final String token = "NzI2ODMwMDIzMjgxMDgyNTIw.Xvi_NQ.anZJbawkR9NliYShB8zK0UdAPC0";
+        final String token = "";
         new JDABuilder(token)
                 .addEventListeners(new RedditEvent())
                 .setActivity(Activity.playing("Searching for John Conner"))
