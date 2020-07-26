@@ -24,8 +24,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class RedditEvent extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event)
@@ -70,8 +72,9 @@ public class RedditEvent extends ListenerAdapter {
         if(msg[0].equals("!help"))
         {
             MessageChannel channel = event.getChannel();
-            channel.sendMessage("Use:\n!rnews - to pull articles from r/news\n!rmemes - "+
-            "to pull memes from r/comedyhomicide").queue();
+            channel.sendMessage("Use:\n!rnews - to pull articles from r/news\n!rmeme - "+
+            "to pull memes from r/comedyhomicide\n!search - to pull first 5 links from duckduck got ex: !search pummel party"+
+            "\n!8ball - shake the 8 ball while keeping your question in mind then press enter to get your answer").queue();
         }
         if(msg[0].equals("!search"))
         {
@@ -81,13 +84,47 @@ public class RedditEvent extends ListenerAdapter {
         }
         if(msg[0].equals("!8ball")){
             MessageChannel channel = event.getChannel();
-            channel.sendMessage("Asking the 🎱 your question..").queue();;
+            channel.sendMessage("Asking the 🎱 your question..").queue();
+            shake8ball(channel);
         }
     }
+    //method for !8ball
+    void shake8ball(MessageChannel ch)
+    {
+        int min,max;
+        Random rand = new Random();
+        min = 0;
+        List<String> predictions = new ArrayList<String>();
+        predictions.add("As I see it, yes");
+        predictions.add("Ask again later");
+        predictions.add("Better not tell you now");
+        predictions.add("Cannot predict now");
+        predictions.add("Concentrate and ask again");
+        predictions.add("Don’t count on it");
+        predictions.add("It is certain");
+        predictions.add("It is decidedly so");
+        predictions.add("Most likely");
+        predictions.add("My reply is no");
+        predictions.add("My sources say no");
+        predictions.add("Outlook good");
+        predictions.add("Outlook not so good");
+        predictions.add("Reply hazy try again");
+        predictions.add("Signs point to yes");
+        predictions.add("Very doubtful");
+        predictions.add("Without a doubt");
+        predictions.add("Yes");
+        predictions.add("Yes, definitely");
+        predictions.add("You may rely on it");
+        max = predictions.size();
+        ch.sendMessage(predictions.get(rand.nextInt((max - min) + 1) + min)).queue();
+
+
+    }
+    //method for !search
     void botSearch(MessageChannel ch,String[]msg) throws IOException
     {
         Document doc;
-        String title,desc,url,urlend,htmlfeed;
+        String title,url,urlend,htmlfeed;
         int counter=0;
         urlend =String.join("+",Arrays.copyOfRange(msg,1,msg.length));
         htmlfeed="https://duckduckgo.com/html/?q="+urlend;
@@ -105,6 +142,7 @@ public class RedditEvent extends ListenerAdapter {
         }
         
     }
+    //method for !rmeme
     List<Submission> pullMemeFeed(com.github.jreddit.entity.User user, RestClient restClient){
         
         try {
@@ -121,6 +159,7 @@ public class RedditEvent extends ListenerAdapter {
 
         return submissionsSubreddit;
     }
+    //method for !rnews
     List<Submission> pullNewsFeed(com.github.jreddit.entity.User user, RestClient restClient){
         
         try {
