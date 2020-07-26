@@ -24,6 +24,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class RedditEvent extends ListenerAdapter {
@@ -86,12 +87,20 @@ public class RedditEvent extends ListenerAdapter {
     void botSearch(MessageChannel ch,String[]msg) throws IOException
     {
         Document doc;
-        String title,desc,url;
-        doc =  Jsoup.connect("https://duckduckgo.com/html/?q=witchcraft+game").get();
+        String title,desc,url,urlend,htmlfeed;
+        int counter=0;
+        urlend =String.join("+",Arrays.copyOfRange(msg,1,msg.length));
+        htmlfeed="https://duckduckgo.com/html/?q="+urlend;
+        doc =  Jsoup.connect(htmlfeed).get();
         Elements links = doc.select("div.result");
         for (Element link : links) {
+           if(counter<5){ 
            title = link.select("h2.result__title>a").first().text();
+           url = link.select("div.result__extras__url>a.result__url").first().attr("href");
            ch.sendMessage(title).queue();
+           ch.sendMessage(url).queue();
+           }
+           counter++;
         }
         
     }
