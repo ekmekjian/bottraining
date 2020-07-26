@@ -81,7 +81,7 @@ public class RedditEvent extends ListenerAdapter {
         }
         if(msg[0].equals("!8ball")){
             MessageChannel channel = event.getChannel();
-            channel.sendMessage("Asking the 🎱 your question..");
+            channel.sendMessage("Asking the 🎱 your question..").queue();;
         }
     }
     void botSearch(MessageChannel ch,String[]msg) throws IOException
@@ -99,6 +99,7 @@ public class RedditEvent extends ListenerAdapter {
            url = link.select("div.result__extras__url>a.result__url").first().attr("href");
            ch.sendMessage(title).queue();
            ch.sendMessage(url).queue();
+           ch.sendMessage("-----------------------------------------------------").queue();
            }
            counter++;
         }
